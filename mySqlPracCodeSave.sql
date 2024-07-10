@@ -70,7 +70,9 @@ SELECT * FROM article WHERE `hit` <= 50 AND `nickname` != '무명';
 # 작성자가 '무명' 이거나 조회수가 55 이상인 게시물을 보여주세요. 힌트 : OR
 SELECT * FROM article WHERE `hit` >= 55 OR `nickname` = '무명';
 
-쿼리3
+########################################
+
+# 쿼리3 (0710)
 # a5 데이터베이스 삭제/생성/선택
 DROP DATABASE IF EXISTS `a5`;
 CREATE DATABASE `a5`;
@@ -151,3 +153,334 @@ SELECT * FROM 사원 AS p INNER JOIN 부서 AS t ON p.부서번호 = t.부서번
 SELECT p.번호 AS 사원번호, p.성명, t.부서명, p.부서번호 FROM 사원 AS p INNER JOIN 부서 AS t ON p.부서번호 = t.부서번호;
 SELECT p.번호, p.성명, t.부서번호, t.부서명 FROM 사원 AS p INNER JOIN 부서 AS t ON p.부서번호 = t.부서번호;
 SELECT p.번호 AS 사원번호, p.성명, t.부서명 FROM 사원 AS p INNER JOIN 부서 AS t ON p.부서번호 = t.부서번호;
+
+########################################
+
+쿼리4 (0710) : 쇼핑몰 문제풀이1
+#1번 방식으로 문제풀이
+
+DROP DATABASE IF EXISTS mall;
+
+CREATE DATABASE mall;
+
+USE mall;
+
+CREATE TABLE t_shopping(
+                           id INT(5) PRIMARY KEY AUTO_INCREMENT,
+                           userId CHAR(30) NOT NULL,
+                           userPw CHAR(30) NOT NULL,
+                           userName CHAR(30) NOT NULL,
+                           address CHAR(50) NOT NULL,
+                           pname CHAR(50) NOT NULL,
+                           price INT(5) NOT NULL
+);
+
+INSERT INTO t_shopping
+SET userId = 'user1',
+userPw = 'pass1',
+userName = '손흥민',
+address = '런던',
+pname = '운동화',
+price = 1000000;
+
+INSERT INTO t_shopping
+SET userId = 'user2',
+userPw = 'pass2',
+userName = '설현',
+address = '서울',
+pname = '코트',
+price = 100000;
+
+INSERT INTO t_shopping
+SET userId = 'user3',
+userPw = 'pass3',
+userName = '원빈',
+address = '대전',
+pname = '반바지',
+price = 30000;
+
+INSERT INTO t_shopping
+SET userId = 'user4',
+userPw = 'pass4',
+userName = '송혜교',
+address = '대구',
+pname = '스커트',
+price = 15000;
+
+INSERT INTO t_shopping
+SET userId = 'user5',
+userPw = 'pass5',
+userName = '소지섭',
+address = '부산',
+pname = '코트',
+price = 100000;
+
+INSERT INTO t_shopping
+SET userId = 'user6',
+userPw = 'pass6',
+userName = '김지원',
+address = '울산',
+pname = '티셔츠',
+price = 9000;
+
+INSERT INTO t_shopping
+SET userId = 'user6',
+userPw = 'pass6',
+userName = '김지원',
+address = '울산',
+pname = '운동화',
+price = 200000;
+
+INSERT INTO t_shopping
+SET userId = 'user1',
+userPw = 'pass1',
+userName = '손흥민',
+address = '런던',
+pname = '코트',
+price = 100000;
+
+INSERT INTO t_shopping
+SET userId = 'user4',
+userPw = 'pass4',
+userName = '송혜교',
+address = '울산',
+pname = '스커트',
+price = 15000;
+
+INSERT INTO t_shopping
+SET userId = 'user1',
+userPw = 'pass1',
+userName = '손흥민',
+address = '런던',
+pname = '운동화',
+price = 1000000;
+
+INSERT INTO t_shopping
+SET userId = 'user5',
+userPw = 'pass5',
+userName = '소지섭',
+address = '부산',
+pname = '모자',
+price = 30000;
+
+##################################
+
+SHOW TABLES;
+SELECT * FROM t_shopping;
+
+##################################
+
+# 1. 손흥민의 주문 개수는?
+SELECT COUNT(*) AS '손흥민의 주문 개수'
+FROM t_shopping
+WHERE userName = '손흥민';
+
+
+# 2. 손흥민이 산 상품은?
+SELECT userName AS '구매자', pname AS '구매 상품'
+FROM t_shopping
+WHERE userName = '손흥민';
+
+
+# 3. 스커트를 산 사람은?
+SELECT userName AS '구매자', pname AS '구매 상품'
+FROM t_shopping
+WHERE pname = '스커트';
+
+# 4. 가장 많이 주문한 사람의 아이디와 이름, 주문개수는?
+SELECT
+    userId AS '아이디',
+        userName AS '구매자',
+        COUNT(userName) AS '구매횟수'
+FROM t_shopping
+GROUP BY userName
+ORDER BY '구매횟수'
+    LIMIT 1;
+
+######################################################
+
+# 쿼리 5 (0710) 쇼핑몰 문제풀이 2
+
+#2번 방식으로 문제풀이
+
+DROP DATABASE IF EXISTS mall;
+
+CREATE DATABASE mall;
+
+USE mall;
+
+CREATE TABLE t_order(
+                        id INT(5) PRIMARY KEY AUTO_INCREMENT,
+                        userNo INT(5) NOT NULL,
+                        productNo INT(5) NOT NULL
+);
+
+CREATE TABLE t_user(
+                       id INT(5) PRIMARY KEY AUTO_INCREMENT,
+                       userId CHAR(200) NOT NULL,
+                       userPw CHAR(200) NOT NULL,
+                       userName CHAR(50) NOT NULL,
+                       addr CHAR(200) NOT NULL
+);
+
+CREATE TABLE t_product(
+                          id INT(5) PRIMARY KEY AUTO_INCREMENT,
+                          pname CHAR(100) NOT NULL,
+                          price INT(10) NOT NULL
+);
+
+
+INSERT INTO t_product
+SET pname = '운동화',
+price = 1000000;
+
+INSERT INTO t_product
+SET pname = '코트',
+price = 100000;
+
+INSERT INTO t_product
+SET pname = '반바지',
+price = 30000;
+
+INSERT INTO t_product
+SET pname = '스커트',
+price = 15000;
+
+INSERT INTO t_product
+SET pname = '코트',
+price = 100000;
+
+INSERT INTO t_product
+SET pname = '티셔츠',
+price = 9000;
+
+INSERT INTO t_product
+SET pname = '운동화',
+price = 200000;
+
+INSERT INTO t_product
+SET pname = '모자',
+price = 30000;
+
+
+
+INSERT INTO t_user
+SET userId = 'user1',
+userPw = 'pass1',
+userName = '손흥민',
+addr = '런던';
+
+INSERT INTO t_user
+SET userId = 'user2',
+userPw = 'pass2',
+userName = '설현',
+addr = '서울';
+
+INSERT INTO t_user
+SET userId = 'user3',
+userPw = 'pass3',
+userName = '원빈',
+addr = '대전';
+
+INSERT INTO t_user
+SET userId = 'user4',
+userPw = 'pass4',
+userName = '송혜교',
+addr = '대구';
+
+INSERT INTO t_user
+SET userId = 'user5',
+userPw = 'pass5',
+userName = '소지섭',
+addr = '부산';
+
+INSERT INTO t_user
+SET userId = 'user6',
+userPw = 'pass6',
+userName = '김지원',
+addr = '울산';
+
+
+INSERT INTO t_order
+SET userNo = 1,
+productNo = 1;
+
+INSERT INTO t_order
+SET userNo = 2,
+productNo = 2;
+
+INSERT INTO t_order
+SET userNo = 3,
+productNo = 3;
+
+INSERT INTO t_order
+SET userNo = 4,
+productNo = 4;
+
+INSERT INTO t_order
+SET userNo = 5,
+productNo = 5;
+
+INSERT INTO t_order
+SET userNo = 6,
+productNo = 6;
+
+INSERT INTO t_order
+SET userNo = 6,
+productNo = 7;
+
+INSERT INTO t_order
+SET userNo = 1,
+productNo = 5;
+
+INSERT INTO t_order
+SET userNo = 4,
+productNo = 4;
+
+INSERT INTO t_order
+SET userNo = 1,
+productNo = 1;
+
+INSERT INTO t_order
+SET userNo = 5,
+productNo = 8;
+
+######################################
+SHOW TABLES;
+SELECT * FROM t_order;
+SELECT * FROM t_product;
+SELECT * FROM t_user;
+
+# 1. 손흥민의 주문 개수는? ???
+SELECT t_order.userNo, t_user.userId, t_user.userName, COUNT(*) AS '구매횟수'
+FROM t_order
+         INNER JOIN t_user
+                    ON t_order.userNo = t_user.id
+WHERE t_user.userName = '손흥민';
+
+
+# 2. 손흥민이 산 상품은? ???
+SELECT t_order.id AS '주문번호', t_user.userName AS '주문자', t_product.pname AS '상품명'
+FROM t_order
+         INNER JOIN t_product
+                    ON t_order.productNo = t_product.id
+         INNER JOIN t_user
+                    ON t_order.userNo = t_user.id
+WHERE t_user.userName = '손흥민';
+
+# 3. 스커트를 산 사람은? ???
+SELECT t_order.id AS '주문번호', t_product.pname AS '상품명', t_user.userName AS '주문자'
+FROM t_order
+         INNER JOIN t_product
+                    ON t_order.productNo = t_product.id
+         INNER JOIN t_user
+                    ON t_order.userNo = t_user.id
+WHERE t_product.pname = '스커트';
+
+
+# 4. 가장 많이 주문한 사람의 아이디와 이름, 주문개수는? ???
+SELECT t_user.userId, t_user.userName, COUNT(*)
+FROM t_user
+         INNER JOIN t_order
+                    ON t_order.userNo = t_user.id
+WHERE t_user.userName = '손흥민';
