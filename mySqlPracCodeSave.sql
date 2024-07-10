@@ -297,6 +297,14 @@ GROUP BY userName
 ORDER BY '구매횟수'
     LIMIT 1;
 
+# 5. 소지섭이 사용한 총 금액은? ???
+SELECT
+    userId AS '아이디',
+        userName AS '구매자',
+        SUM(price) AS '총 금액'
+FROM t_shopping
+WHERE userName = '소지섭';
+
 ######################################################
 
 # 쿼리 5 (0710) 쇼핑몰 문제풀이 2
@@ -484,3 +492,12 @@ FROM t_user
          INNER JOIN t_order
                     ON t_order.userNo = t_user.id
 WHERE t_user.userName = '손흥민';
+
+# 5. 소지섭이 사용한 총 금액은? ???
+SELECT t_order.id, t_user.userId, t_user.userName, SUM(t_product.price) AS '사용금액'
+FROM t_order
+         INNER JOIN t_user
+                    ON t_order.userNo = t_user.id
+         INNER JOIN t_product
+                    ON t_order.productNo = t_product.id
+WHERE t_user.userName = '소지섭';
