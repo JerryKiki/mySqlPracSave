@@ -1031,6 +1031,9 @@ FROM members;
 
 # 검색속도 확인
 ## 힌트 : SQL_NO_CACHE
+## 검색을 할때, 기존에 해당 데이터가 검색되었다면 임시저장용 'CACHE DATA'에서 바로 불러와버린다.
+## 이러면 실제 검색 속도를 사용할 수 없기에, SQL_NO_CACHE를 걸어줘서 실제 검색 속도를 검사할 수 있다.
+## 캐시 쓰지 말라는 뜻!
 SELECT SQL_NO_CACHE *
 FROM members;
 
@@ -1117,7 +1120,6 @@ title = '글 2 제목',
 writerName = '홍길순',
 memberId = 2;
 
-
 # 1번 회원이 글 3 작성(title = '글 3 제목', `body` = '글 3 내용')
 
 INSERT INTO articles
@@ -1126,7 +1128,6 @@ title = '글 3 제목',
 `body` = '글 3 내용',
 writerName = '홍길동',
 memberId = 1;
-
 
 # 전체글 조회
 SELECT * FROM articles;
